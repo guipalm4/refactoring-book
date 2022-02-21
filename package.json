@@ -5,7 +5,13 @@
   "repository": "git@github.com:guipalm4/refactoring-book.git",
   "author": "guipalm4 <gomes.lmc@gmail.com>",
   "license": "MIT",
-
-  "type": "module",
-  "exports": "./index.mjs"
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.1"
+  },
+  "scripts": {
+    "test": "mocha --watch --recursive --require babel-core/register"
+  }
 }
