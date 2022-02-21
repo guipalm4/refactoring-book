@@ -1,0 +1,11 @@
+{
+  "name": "refactoring-book",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:guipalm4/refactoring-book.git",
+  "author": "guipalm4 <gomes.lmc@gmail.com>",
+  "license": "MIT",
+
+  "type": "module",
+  "exports": "./index.mjs"
+}
