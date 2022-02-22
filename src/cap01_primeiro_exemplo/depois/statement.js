@@ -8,8 +8,12 @@ export function statement(invoice, plays) {
         minimumFractionDigits: 2
       }).format;
 
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
+  }
+
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    const play = playFor(perf);
     let thisAmount = amountFor(perf, play);
     // soma créditos por volume
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -19,7 +23,7 @@ export function statement(invoice, plays) {
     result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
-  result += `Amount owed is ${format(totalAmount/100)}\n`
+  result += `Amount owned is ${format(totalAmount/100)}\n`
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 }
@@ -27,7 +31,7 @@ export function statement(invoice, plays) {
 function amountFor(aPerformance, play) {
   let result = 0;
 
-  switch(play.type) {
+  switch (play.type) {
     case "tragedy":
       result = 40000;
       if (aPerformance.audience > 30) {
@@ -46,3 +50,4 @@ function amountFor(aPerformance, play) {
   }
   return result;
 }
+
