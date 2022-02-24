@@ -6,10 +6,10 @@ export function statement(invoice, plays) {
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
     // exibe a linha para esta requisição
-    result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience} seats)\n`;
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
     totalAmount += amountFor(perf);
   }
-  result += `Amount owned is ${format(totalAmount/100)}\n`
+  result += `Amount owned is ${usd(totalAmount)}\n`
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 
@@ -48,11 +48,11 @@ export function statement(invoice, plays) {
     return result;
   }
 
-  function format(aNumber) {
+  function usd(aNumber) {
     return new Intl.NumberFormat("en-US",
         {
           style: "currency", currency: "USD",
           minimumFractionDigits: 2
-        }).format(aNumber);
+        }).format(aNumber/100);
   }
 }
