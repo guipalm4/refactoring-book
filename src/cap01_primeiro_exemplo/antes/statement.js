@@ -37,7 +37,7 @@ export function statement(invoice, plays) {
     totalAmount += thisAmount;
 
   }
-  result += `Amount owed is ${format(totalAmount/100)}\n`
+  result += `Amount owned is ${format(totalAmount/100)}\n`
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 } 
