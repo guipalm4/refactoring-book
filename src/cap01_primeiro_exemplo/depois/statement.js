@@ -49,19 +49,13 @@ export function statement(invoice, plays) {
     }
 
     function totalAmount(statementData) {
-        let result = 0;
-        for (let perf of statementData.performances) {
-            result += perf.amount;
-        }
-        return result;
+        return statementData.performances.reduce((total, aPerformance) =>
+            total + aPerformance.amount, 0)
     }
 
     function totalVolumeCredits(statementData) {
-        let result = 0;
-        for (let perf of statementData.performances) {
-            result += perf.volumeCredits;
-        }
-        return result;
+        return statementData.performances.reduce((total, performance) =>
+            total + performance.volumeCredits, 0)
     }
 }
 
@@ -73,7 +67,6 @@ function renderPlainText(statementData) {
     result += `Amount owned is ${usd(statementData.totalAmount)}\n`
     result += `You earned ${statementData.totalVolumeCredits} credits\n`;
     return result;
-
 
     function usd(aNumber) {
         return new Intl.NumberFormat("en-US",
