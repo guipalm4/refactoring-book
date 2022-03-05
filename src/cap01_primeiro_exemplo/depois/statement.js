@@ -7,29 +7,13 @@ export function statement(invoice, plays) {
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);
         result.play = playFor(result)
+        result.amount = amountFor(result)
+        result.volumeCredits = volumeCreditsFor(result);
         return result
     }
 
     function playFor(aPerformance) {
         return plays[aPerformance.playID];
-    }
-}
-
-function renderPlainText(statementData) {
-    let result = `Statement for ${statementData.customer}\n`;
-    for (let perf of statementData.performances) {
-        result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
-    }
-    result += `Amount owned is ${usd(totalAmount())}\n`
-    result += `You earned ${totalVolumeCredits()} credits\n`;
-    return result;
-
-    function totalAmount() {
-        let result = 0;
-        for (let perf of statementData.performances) {
-            result += amountFor(perf);
-        }
-        return result;
     }
 
     function amountFor(aPerformance) {
@@ -54,19 +38,37 @@ function renderPlainText(statementData) {
         return result;
     }
 
-    function totalVolumeCredits() {
-        let result = 0;
-        for (let perf of statementData.performances) {
-            result += volumeCreditsFor(perf);
-        }
-        return result;
-    }
-
     function volumeCreditsFor(aPerformance) {
         let result = 0;
         result += Math.max(aPerformance.audience - 30, 0);
         if ("comedy" === aPerformance.play.type)
             result += Math.floor(aPerformance.audience / 5);
+        return result;
+    }
+}
+
+function renderPlainText(statementData) {
+    let result = `Statement for ${statementData.customer}\n`;
+    for (let perf of statementData.performances) {
+        result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
+    }
+    result += `Amount owned is ${usd(totalAmount())}\n`
+    result += `You earned ${totalVolumeCredits()} credits\n`;
+    return result;
+
+    function totalAmount() {
+        let result = 0;
+        for (let perf of statementData.performances) {
+            result += perf.amount;
+        }
+        return result;
+    }
+
+    function totalVolumeCredits() {
+        let result = 0;
+        for (let perf of statementData.performances) {
+            result += perf.volumeCredits;
+        }
         return result;
     }
 
