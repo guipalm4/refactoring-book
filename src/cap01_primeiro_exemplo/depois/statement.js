@@ -3,24 +3,26 @@ export function statement(invoice, plays) {
     statementData.customer = invoice.customer;
     statementData.performances = invoice.performances.map(enrichPerformance);
     return renderPlainText(statementData, plays);
-}
 
-function enrichPerformance(aPerformance) {
-    return Object.assign({}, aPerformance);
-}
-
-function renderPlainText(statementData, plays) {
-    let result = `Statement for ${statementData.customer}\n`;
-    for (let perf of statementData.performances) {
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    function enrichPerformance(aPerformance) {
+        const result = Object.assign({}, aPerformance);
+        result.play = playFor(result)
+        return result
     }
-    result += `Amount owned is ${usd(totalAmount())}\n`
-    result += `You earned ${totalVolumeCredits()} credits\n`;
-    return result;
 
     function playFor(aPerformance) {
         return plays[aPerformance.playID];
     }
+}
+
+function renderPlainText(statementData) {
+    let result = `Statement for ${statementData.customer}\n`;
+    for (let perf of statementData.performances) {
+        result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    }
+    result += `Amount owned is ${usd(totalAmount())}\n`
+    result += `You earned ${totalVolumeCredits()} credits\n`;
+    return result;
 
     function totalAmount() {
         let result = 0;
@@ -32,7 +34,7 @@ function renderPlainText(statementData, plays) {
 
     function amountFor(aPerformance) {
         let result = 0;
-        switch (playFor(aPerformance).type) {
+        switch (aPerformance.play.type) {
             case "tragedy":
                 result = 40000;
                 if (aPerformance.audience > 30) {
@@ -63,7 +65,7 @@ function renderPlainText(statementData, plays) {
     function volumeCreditsFor(aPerformance) {
         let result = 0;
         result += Math.max(aPerformance.audience - 30, 0);
-        if ("comedy" === playFor(aPerformance).type)
+        if ("comedy" === aPerformance.play.type)
             result += Math.floor(aPerformance.audience / 5);
         return result;
     }
