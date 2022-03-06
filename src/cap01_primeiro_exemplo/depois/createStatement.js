@@ -70,15 +70,7 @@ function createStatementData(invoice, plays) {
     function playFor(aPerformance) {
         return plays[aPerformance.playID];
     }
-
-    function amountFor(aPerformance) {
-        return new PerformanceCalculator(aPerformance, playFor(aPerformance)).amount;
-    }
-
-    function volumeCreditsFor(aPerformance) {
-
-    }
-
+    
     function totalAmount(statementData) {
         return statementData.performances.reduce((total, aPerformance) =>
             total + aPerformance.amount, 0)
