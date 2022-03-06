@@ -14,16 +14,7 @@ class PerformanceCalculator {
     }
 
     get amount() {
-        let result = 0;
-        switch (this.play.type) {
-            case "tragedy":
-                throw Error("Calculado na subclasse");
-            case "comedy":
-                throw Error("Calculado na subclasse");
-            default:
-                throw new Error(`Unknown type: ${this.play.type}`);
-        }
-        return result;
+        throw new Error("Subclass responsibility");
     }
 }
 
